@@ -1,8 +1,17 @@
 var height = 25;
 var width = 10;
 
-var sheet = SpreadsheetApp.openById("1czTERuUR3NIEhKvfPkiem5g0-ilykNKPzo2cQ6qdqfo").getSheetByName("Sheet1");
+//Row preferences
+var preferences = {
+  1: "A",
+  2: "B",
+  3: "C",
+  4: "D"
+};
+
+var sheet = SpreadsheetApp.openById("1czTERuUR3NIEhKvfPkiem5g0-ilykNKPzo2cQ6qdqfo").getSheetByName("Seating");
 var range = sheet.getRange(1, 1, height, width);
+var preferenceMap = SpreadsheetApp.openById("1czTERuUR3NIEhKvfPkiem5g0-ilykNKPzo2cQ6qdqfo").getSheetByName("Preference Map").getRange(1, 1, height, width).getValues();
 
 var moves = 0;
 
@@ -18,17 +27,7 @@ function GenerateRandom(){
   range.setValues(values);
 }
 
-function FillRows() {
-  var testArray = 
-  [[1,2,3],
-   [4,5,6],
-   [7,8,9]];
-  
-  var currentSeats = 
-  [[1,0,0],
-   [1,0,1],
-   [1,1,1]];
-  
+function FillRows() { 
   ProcessSeats(range.getValues());
 }
 
@@ -56,15 +55,32 @@ function FillSeat(currentSeats, row, seat){
   }
 }
 
-
 function DetermineNextSeatToMove(currentSeats, row, seat){
-  
   for(var r = currentSeats.length - 1; r >= 0; r--){
     for(var s = currentSeats[r].length - 1; s >= 0; s--){
       if(s == seat && r == row){
         return false;
       }
       if(currentSeats[r][s] == 1){
+        return {row: r, seat: s}
+      }
+    }
+  }
+  return false;
+}
+
+function DetermineNextSeatToMove(currentSeats, row, seat){
+  var preference = preferenceMap[row][seat];
+  if(preference == 0){
+    return false;
+  }
+  
+  for(var r = currentSeats.length - 1; r >= 0; r--){
+    for(var s = currentSeats[r].length - 1; s >= 0; s--){
+      if(s == seat && r == row){
+        return false;
+      }
+      if(preferences[preference] == currentSeats[r][s]){
         return {row: r, seat: s}
       }
     }

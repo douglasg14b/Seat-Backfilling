@@ -44,7 +44,7 @@ function ProcessSeats(currentSeats){
 }
 
 function FillSeat(currentSeats, row, seat){
-  var nextIndex = DetermineNextSeatToMove(currentSeats, row, seat);
+  var nextIndex = DetermineNextSeatToMove2(currentSeats, row, seat);
   if(nextIndex){
     var currentSeatVal = currentSeats[row][seat];
     var nextSeatVal = currentSeats[nextIndex.row][nextIndex.seat];
@@ -57,17 +57,16 @@ function FillSeat(currentSeats, row, seat){
 
 function DetermineNextSeatToMove2(currentSeats, row, seat){
   var preference = preferenceMap[row][seat];
-  if(preference == 0){
-    return false;
-  }
   
   for(var r = currentSeats.length - 1; r >= 0; r--){
     for(var s = currentSeats[r].length - 1; s >= 0; s--){
       if(s == seat && r == row){
-        return false;
+        //return false;
       }
       if(preferences[preference] == currentSeats[r][s]){
-        return {row: r, seat: s}
+        if(preferenceMap[r][s] != preference){ //Do not move objects already inside a preferable space
+          return {row: r, seat: s}
+        }        
       }
     }
   }

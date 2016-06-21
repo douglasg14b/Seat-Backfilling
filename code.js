@@ -58,13 +58,12 @@ function FillSeat(currentSeats, row, seat){
 
 
 function DetermineNextSeatToMove(currentSeats, row, seat){
-  var gotToSeat = false;
-  for(var r = 0; r < currentSeats.length; r++){
-    if(r < row){
-      continue;
-    }
-    for(var s = gotToSeat ? 0 : seat; s < currentSeats[r].length; s++){
-      gotToSeat = true;
+  
+  for(var r = currentSeats.length - 1; r >= 0; r--){
+    for(var s = currentSeats[r].length - 1; s >= 0; s--){
+      if(s == seat && r == row){
+        return false;
+      }
       if(currentSeats[r][s] == 1){
         return {row: r, seat: s}
       }

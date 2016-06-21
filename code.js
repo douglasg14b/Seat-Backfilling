@@ -55,21 +55,7 @@ function FillSeat(currentSeats, row, seat){
   }
 }
 
-function DetermineNextSeatToMove(currentSeats, row, seat){
-  for(var r = currentSeats.length - 1; r >= 0; r--){
-    for(var s = currentSeats[r].length - 1; s >= 0; s--){
-      if(s == seat && r == row){
-        return false;
-      }
-      if(currentSeats[r][s] == 1){
-        return {row: r, seat: s}
-      }
-    }
-  }
-  return false;
-}
-
-function DetermineNextSeatToMove(currentSeats, row, seat){
+function DetermineNextSeatToMove2(currentSeats, row, seat){
   var preference = preferenceMap[row][seat];
   if(preference == 0){
     return false;
@@ -87,3 +73,18 @@ function DetermineNextSeatToMove(currentSeats, row, seat){
   }
   return false;
 }
+
+function DetermineNextSeatToMove(currentSeats, row, seat){
+  for(var r = currentSeats.length - 1; r >= 0; r--){
+    for(var s = currentSeats[r].length - 1; s >= 0; s--){
+      if(s == seat && r == row){
+        return false;
+      }
+      if(currentSeats[r][s] == 1){
+        return {row: r, seat: s}
+      }
+    }
+  }
+  return false;
+}
+
